@@ -43,7 +43,7 @@
             animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        /* অ্যানিমেটেড পোস্টম্যান ক্যারেক্টার (SVG/CSS Art) */
+        /* অ্যানিমেটেড পোস্টম্যান ক্যারেক্টার */
         .postman-character {
             width: 140px;
             height: 180px;
@@ -165,7 +165,7 @@
             box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
         }
 
-        /* 2. অ্যানিমেটেড থিয়েটার কার্টেইন (পর্দা) */
+        /* ২. অ্যানিমেটেড থিয়েটার কার্টেইন (পর্দা) */
         .curtain {
             position: fixed;
             top: 0;
@@ -187,7 +187,6 @@
             transform: translateX(100%);
         }
 
-        /* পর্দা বন্ধ থাকার অবস্থা */
         body.curtain-closed .curtain.left {
             transform: translateX(0);
         }
@@ -196,7 +195,7 @@
             transform: translateX(0);
         }
 
-        /* 3. লাভ লেটার এনভেলপ ও কার্ট স্ক্রিন */
+        /* ৩. লাভ লেটার এনভেলপ স্ক্রিন */
         #envelope-screen {
             position: absolute;
             inset: 0;
@@ -214,21 +213,21 @@
             pointer-events: all;
         }
 
-        /* থ্রিডি খাম (Envelope) */
+        /* থ্রিডি খাম (Envelope) - সাইজ একটু বড় করা হয়েছে যাতে কবিতা সহজে ধরে */
         .envelope-wrapper {
             position: relative;
             cursor: pointer;
-            transform: scale(0.8);
+            transform: scale(0.85);
             transition: transform 0.5s ease;
         }
 
         .envelope-wrapper:hover {
-            transform: scale(0.85);
+            transform: scale(0.9);
         }
 
         .envelope {
-            width: 320px;
-            height: 220px;
+            width: 380px;
+            height: 250px;
             background: #e11d48;
             position: relative;
             border-bottom-left-radius: 12px;
@@ -236,15 +235,14 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        /* খামের ফ্ল্যাপ ও পকেট */
         .envelope::before {
             content: '';
             position: absolute;
             top: 0;
             z-index: 2;
-            border-top: 130px solid #f43f5e;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
+            border-top: 150px solid #f43f5e;
+            border-left: 190px solid transparent;
+            border-right: 190px solid transparent;
             transform-origin: top;
             transition: transform 0.6s ease 0.4s, z-index 0.2s ease 0.4s;
         }
@@ -255,22 +253,21 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid #be123c;
-            border-right: 160px solid #be123c;
-            border-bottom: 110px solid #9f1239;
-            border-top: 110px solid transparent;
+            border-left: 190px solid #be123c;
+            border-right: 190px solid #be123c;
+            border-bottom: 130px solid #9f1239;
+            border-top: 130px solid transparent;
             border-bottom-left-radius: 12px;
             border-bottom-right-radius: 12px;
             z-index: 3;
         }
 
-        /* লাভ সিল (Heart Seal) */
         .heart-seal {
             position: absolute;
-            top: 100px;
+            top: 110px;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 38px;
+            font-size: 42px;
             z-index: 4;
             transition: opacity 0.4s ease, transform 0.4s ease;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
@@ -282,11 +279,11 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 280px;
-            height: 180px;
+            width: 340px;
+            height: 200px;
             background: #fff8f0;
             border-radius: 8px;
-            padding: 25px;
+            padding: 15px;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
             z-index: 1;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s, height 0.6s ease 1.5s;
@@ -300,15 +297,17 @@
         .letter-content {
             opacity: 0;
             transition: opacity 0.5s ease 1.8s;
+            width: 100%;
         }
 
-        .letter-content h1 {
-            color: #be123c;
-            font-size: 1.6rem;
+        /* ৪ লাইনের কবিতার জন্য ফন্ট ও স্টাইল */
+        .letter-content p {
+            color: #881337;
+            font-size: 0.95rem;
             font-family: 'Georgia', serif;
-            font-weight: bold;
-            line-height: 1.4;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-weight: 600;
+            line-height: 1.8;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
         }
 
         /* খাম খোলার অ্যানিমেশন স্টেট */
@@ -319,12 +318,12 @@
 
         .envelope-wrapper.open .heart-seal {
             opacity: 0;
-            transform: translate(-50%, -80%) scale(1.5);
+            transform: translate(-50%, -90%) scale(1.5);
         }
 
         .envelope-wrapper.open .letter {
-            transform: translate(-50%, -120px);
-            height: 240px;
+            transform: translate(-50%, -150px);
+            height: 270px;
             z-index: 4;
         }
 
@@ -332,7 +331,6 @@
             opacity: 1;
         }
 
-        /* অ্যানিমেশন কি-ফ্রেমস */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -383,13 +381,10 @@
                 <div class="envelope-pocket"></div>
                 <div class="letter">
                     <div class="letter-content">
-                        <h1>নরম মনের মানুষ তুমি, ছড়াও কেবল সজীবতা,
-
-শান্ত তোমার চোখের চাওয়ায় লুকিয়ে আছে কোমলতা।
-
-তোমার মতো এমন মানুষ পাওয়া সত্যিই বড় মুশকিল,
-
-সবার মাঝে তোমার উপস্থিতিটাই বড্ড বেশি মনোলোভা। ❤️</h1>
+                        <p>নরম মনের মানুষ তুমি, ছড়াও কেবল সজীবতা,<br>
+                        শান্ত তোমার চোখের চাওয়ায় লুকিয়ে আছে কোমলতা।<br>
+                        তোমার মতো এমন মানুষ পাওয়া সত্যিই বড় মুশকিল,<br>
+                        সবার মাঝে তোমার উপস্থিতিটাই বড্ড বেশি মনোলোভা।</p>
                     </div>
                 </div>
             </div>
@@ -413,17 +408,13 @@
 
         // "হ্যাঁ" বাটনে ক্লিক করলে পর্দা বন্ধ হয়ে খাম আসবে
         yesBtn.addEventListener('click', () => {
-            // ১. আবার পর্দা বন্ধ করা
             body.classList.add('curtain-closed');
 
             setTimeout(() => {
-                // ২. পোস্টম্যান স্ক্রিন হাইড করা এবং খাম স্ক্রিন একটিভ করা
                 postmanScreen.style.display = 'none';
                 envelopeScreen.classList.add('active');
-
-                // ৩. পর্দা আবার খুলে এনভেলপ দৃশ্যমান করা
                 body.classList.remove('curtain-closed');
-            }, 1200); // পর্দা বন্ধ হওয়ার সময়
+            }, 1200);
         });
 
         // খামের ওপর ক্লিক করলে অ্যানিমেশনের মাধ্যমে চিঠি বের হওয়া
