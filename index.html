@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিশেষ একটি চিঠি ✉️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 1. ফার্স্ট স্ক্রিন: পোস্টম্যান ক্যারেক্টার ও ডায়ালগ */
+        #postman-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+            z-index: 10;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .postman-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* অ্যানিমেটেড পোস্টম্যান ক্যারেক্টার (SVG/CSS Art) */
+        .postman-character {
+            width: 140px;
+            height: 180px;
+            position: relative;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .postman-hat {
+            width: 70px;
+            height: 25px;
+            background: #1e40af;
+            border-radius: 15px 15px 0 0;
+            position: absolute;
+            top: 0;
+            left: 35px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .postman-hat::after {
+            content: '✉️';
+            position: absolute;
+            top: 2px;
+            left: 26px;
+            font-size: 14px;
+        }
+        .postman-face {
+            width: 80px;
+            height: 75px;
+            background: #fde047;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.1);
+        }
+        .eye {
+            width: 10px;
+            height: 10px;
+            background: #1e293b;
+            border-radius: 50%;
+            position: absolute;
+            top: 28px;
+        }
+        .eye.left { left: 20px; }
+        .eye.right { right: 20px; }
+        .smile {
+            width: 30px;
+            height: 15px;
+            border-bottom: 4px solid #1e293b;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            bottom: 15px;
+            left: 25px;
+        }
+        .postman-body {
+            width: 90px;
+            height: 75px;
+            background: #2563eb;
+            border-radius: 20px 20px 0 0;
+            position: absolute;
+            top: 90px;
+            left: 25px;
+        }
+        .bag {
+            width: 45px;
+            height: 40px;
+            background: #854d0e;
+            border-radius: 8px;
+            position: absolute;
+            bottom: -5px;
+            right: -10px;
+            transform: rotate(-15deg);
+            border: 2px solid #a16207;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* স্পীচ বাবল ডায়ালগ */
+        .speech-bubble {
+            background: #ffffff;
+            color: #1e293b;
+            padding: 20px 25px;
+            border-radius: 20px;
+            max-width: 340px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 15px 12px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ec4899 0%, #ef4444 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+        }
+
+        /* 2. অ্যানিমেটেড থিয়েটার কার্টেইন (পর্দা) */
+        .curtain {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d);
+            z-index: 5;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .curtain.left {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .curtain.right {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        /* পর্দা বন্ধ থাকার অবস্থা */
+        body.curtain-closed .curtain.left {
+            transform: translateX(0);
+        }
+
+        body.curtain-closed .curtain.right {
+            transform: translateX(0);
+        }
+
+        /* 3. লাভ লেটার এনভেলপ ও কার্ট স্ক্রিন */
+        #envelope-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #2a081a 0%, #0f172a 100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease 0.5s;
+        }
+
+        #envelope-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* থ্রিডি খাম (Envelope) */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(0.85);
+        }
+
+        .envelope {
+            width: 320px;
+            height: 220px;
+            background: #e11d48;
+            position: relative;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* খামের ফ্ল্যাপ ও পকেট */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 130px solid #f43f5e;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            transform-origin: top;
+            transition: transform 0.6s ease 0.4s, z-index 0.2s ease 0.4s;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid #be123c;
+            border-right: 160px solid #be123c;
+            border-bottom: 110px solid #9f1239;
+            border-top: 110px solid transparent;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 3;
+        }
+
+        /* লাভ সিল (Heart Seal) */
+        .heart-seal {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 38px;
+            z-index: 4;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        /* চিঠি (Letter Container) */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 180px;
+            background: #fff8f0;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            z-index: 1;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s, height 0.6s ease 1.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .letter-content {
+            opacity: 0;
+            transition: opacity 0.5s ease 1.8s;
+        }
+
+        .letter-content h1 {
+            color: #be123c;
+            font-size: 1.6rem;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* খাম খোলার অ্যানিমেশন স্টেট */
+        .envelope-wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .envelope-wrapper.open .heart-seal {
+            opacity: 0;
+            transform: translate(-50%, -80%) scale(1.5);
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translate(-50%, -120px);
+            height: 240px;
+            z-index: 4;
+        }
+
+        .envelope-wrapper.open .letter-content {
+            opacity: 1;
+        }
+
+        /* অ্যানিমেশন কি-ফ্রেমস */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="curtain-closed">
+
+    <!-- বাম ও ডান পর্দা -->
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+
+    <!-- ১. পোস্টম্যান ও স্পীচ বাবল স্ক্রিন -->
+    <div id="postman-screen">
+        <div class="postman-container">
+            <div class="postman-character">
+                <div class="postman-hat"></div>
+                <div class="postman-face">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                    <div class="smile"></div>
+                </div>
+                <div class="postman-body">
+                    <div class="bag"></div>
+                </div>
+            </div>
+            
+            <div class="speech-bubble">
+                মিস সুমাইয়া আপনার জন্য একটা চিঠি আসছে। আপনি কি চিঠিটা দেখতে চান?
+            </div>
+
+            <button class="btn-yes" id="yesBtn">হ্যাঁ</button>
+        </div>
+    </div>
+
+    <!-- ২. লাভ এনভেলপ স্ক্রিন -->
+    <div id="envelope-screen">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="heart-seal">💖</div>
+            <div class="envelope">
+                <div class="envelope-pocket"></div>
+                <div class="letter">
+                    <div class="letter-content">
+                        <h1>Welcome to this world. ❤️</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript লজিক -->
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const postmanScreen = document.getElementById('postman-screen');
+        const envelopeScreen = document.getElementById('envelope-screen');
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const body = document.body;
+
+        // পেজ লোড হলে পর্দা খুলবে
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                body.classList.remove('curtain-closed');
+            }, 300);
+        });
+
+        // "হ্যাঁ" বাটনে ক্লিক করলে পর্দা বন্ধ হয়ে খাম আসবে
+        yesBtn.addEventListener('click', () => {
+            // ১. আবার পর্দা বন্ধ করা
+            body.classList.add('curtain-closed');
+
+            setTimeout(() => {
+                // ২. পোস্টম্যান স্ক্রিন হাইড করা এবং খাম স্ক্রিন একটিভ করা
+                postmanScreen.style.display = 'none';
+                envelopeScreen.classList.add('active');
+
+                // ৩. পর্দা আবার খুলে এনভেলপ দৃশ্যমান করা
+                body.classList.remove('curtain-closed');
+            }, 1200); // পর্দা বন্ধ হওয়ার সময়
+        });
+
+        // খামের ওপর ক্লিক করলে অ্যানিমেশনের মাধ্যমে চিঠি বের হওয়া
+        envelopeWrapper.addEventListener('click', () => {
+            envelopeWrapper.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
